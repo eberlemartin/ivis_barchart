@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="jquery.csv.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(initialize);
+
+        function drawChart() {
+
+            //var data = new google.visualization.DataTable();
+            //data.addColumn('string', 'Topping');
+            //data.addColumn('number', 'Slices');
+            //data.addColumn('number', 'Size')
+            //data.addRows([
+            //    ['Mushrooms', 3, 7],
+            //    ['Onions', 1, 9],
+            //    ['Olives', 1, 6],
+            //    ['Zucchini', 1, 7],
+            //    ['Pepperoni', 2, 3]
+            //]);
+
+            // Set chart options
+           // var options = {'title':'How Much Pizza I Ate Last Night',
+           //     'width':400,
+           //     'height':300};
+//
+           // // Instantiate and draw our chart, passing in some options.
+           // var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+           // chart.draw(data, options);
+
+        }
+
+        function initialize() {
+            var opts = {sendMethod: 'auto'};
+            // Replace the data source URL on next line with your data source URL.
+            var query = new google.visualization.Query('http://localhost:63342/ivisd3_barchart/who-life-expectancy-by-country.csv', opts);
+
+            // Optional request to return only column C and the sum of column B, grouped by C members.
+            //query.setQuery('select C, sum(B) group by C');
+
+            // Send the query with a callback function.
+            query.send(handleQueryResponse);
+        }
+
+        function handleQueryResponse(response) {
+
+            if (response.isError()) {
+                alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+                return;
+            }
+
+            var data = response.getDataTable();
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+            chart.draw(data, {width: 400, height: 240, is3D: true});
+        }
+    </script>
+</head>
+<body>
+<div id="chart_div"></div>
+
+    </body>
+</html>
