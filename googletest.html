@@ -34,6 +34,7 @@
         }
 
         function initialize() {
+            console.log("initialize called");
             var opts = {sendMethod: 'auto'};
             // Replace the data source URL on next line with your data source URL.
             var query = new google.visualization.Query('https://eberlemartin.github.io/ivisd3_barchart/who-life-expectancy-by-country.csv', opts);
@@ -43,9 +44,11 @@
 
             // Send the query with a callback function.
             query.send(handleQueryResponse);
+
         }
 
         function handleQueryResponse(response) {
+            console.log("callback called");
 
             if (response.isError()) {
                 alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
