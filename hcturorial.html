@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--1. import jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<!--2. import HighCharts-->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <meta charset="UTF-8">
+    <title>Tutorial</title>
+</head>
+<body>
+
+<!-- 3. create div for Chart and size -->
+<p>
+    <div id="container" style="width: 550px; height: 400px; margin: 0 auto"></div>
+    <script language="JavaScript">
+        $(document).ready(function() {
+
+            // 4. Code for the Chart goes here
+
+
+            var title = {
+                text: 'Martins Beispiel Chart'
+            };
+
+            var subtitle = {
+                text: 'Frustrationskurve aufgrund schlechter Dokumentation'
+            };
+
+            //x = links nach rechts, beschriftung unten
+            var xAxis = {
+                categories: [ '00:00', '01:00','02:00', '03:00', '04:00', '05:00']
+            };
+
+            //y = oben nach unten, beschriftung links
+            var yAxis = {
+              title: {
+                  text: 'Frustrationslevel (in Kopfschmerzstärke)'
+              },
+                plotLines: [{
+                  //linie der y achse (für unterbrüche)
+                 value: 0,
+                 width: 1,
+                 color: '#000000'
+                }]
+            };
+
+            var tooltip = {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderWidth: 0
+            };
+
+            var series = [
+                {
+                    name: 'monday',
+                    data: [2, 3, 7, 9, 10, 10]
+                },
+                {
+                    name: 'tuesday',
+                    data: [0, 1, 1, 2, 5, 2]
+                }
+            ];
+
+            var json = {};
+
+            json.title = title;
+            json.subtitle = subtitle;
+            json.xAxis = xAxis;
+            json.yAxis = yAxis;
+            json.tooltip = tooltip;
+            //json.legend = legend;
+            json.series = series;
+
+            $('#container').highcharts(json);
+
+        });
+    </script>
+</p>
+
+<p>
+<div id="container2" style="width: 550px; height: 400px; margin: 0 auto"></div>
+<script language="JavaScript">
+    $(document).ready(function() {
+
+        // 4. Code for the Chart goes here
+
+        var chart = {
+            type: 'bar'
+        }
+
+        var title = {
+            text: 'Martins Beispiel Chart 2'
+        };
+
+        var subtitle = {
+            text: 'Frustrationskurve aufgrund schlechter Dokumentation'
+        };
+
+        //x = links nach rechts, beschriftung unten
+        var xAxis = {
+            categories: [ '00:00', '01:00','02:00', '03:00', '04:00', '05:00']
+        };
+
+        //y = oben nach unten, beschriftung links
+        var yAxis = {
+            title: {
+                text: null
+            },
+            plotLines: [{
+                //linie der y achse (für unterbrüche)
+                value: 0,
+                width: 1,
+                color: '#000000'
+            }]
+        };
+
+        var tooltip = {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        };
+
+        var series = [
+            {
+                name: 'monday',
+                data: [2, 3, 7, 9, 10, 10]
+            },
+            {
+                name: 'tuesday',
+                data: [0, 1, 1, 2, 5, 2]
+            }
+        ];
+
+        var json = {};
+
+        json.chart = chart;
+        json.title = title;
+        json.subtitle = subtitle;
+        json.xAxis = xAxis;
+        json.yAxis = yAxis;
+        json.tooltip = tooltip;
+        //json.legend = legend;
+        json.series = series;
+
+        $('#container2').highcharts(json);
+
+    });
+</script>
+</p>
+
+<p>
+<div id="container3" style="width: 550px; height: 4000px; margin: 0 auto"></div>
+<script language="JavaScript">
+    $(document).ready(function() {
+
+        // 5. Add csv for Data
+        var series = [
+            {
+                name: '2015',
+                data: []
+            }
+        ];
+
+        // rotated in bar charts. x = links oben nach unten
+        var xAxis = {
+            categories: [],
+            title: {text: null},
+            // labels: {
+            //     enabled: true,
+            //     align: 'right'
+            // }
+        };
+        var lines = [];
+
+        $.get('who-life-expectancy-by-country.csv', function(data) {
+
+            //split to lines
+            lines = data.split('\n');
+
+            //split to values
+            lines.forEach(function (line) {
+                var temp = line.split(',', 5);
+
+                if(temp[1] == '2015') {
+
+                    //xAxis categories
+                    xAxis.categories.push(temp[0]);
+
+                    //Data values
+                    series[0].data.push(parseFloat(temp[2]));
+                    console.log(temp[2]);
+                }
+            });
+
+            var chart = {
+                type: 'bar'
+            };
+
+            var title = {
+                text: 'Life expectancy at Birth 2015 Version 2'
+            };
+
+            //y = links nach rechts, beschriftung unten
+            var yAxis = {
+                min: 0,
+                title: {
+                    text: 'Age'
+                },
+                labels: {
+                    enabled: true
+                }
+            };
+
+            var tooltip = {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderWidth: 0
+            };
+
+            var plotOptions = {
+                bar: {
+                    dataLabels: {
+                        enabled: false
+                    }
+                }
+            };
+
+            var legend = {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: -40,
+                y: 100,
+                floating: true
+            }
+            var json = {};
+
+            json.chart = chart;
+            json.title = title;
+            //json.subtitle = subtitle;
+            json.xAxis = xAxis;
+            json.yAxis = yAxis;
+            json.tooltip = tooltip;
+            //json.legend = legend;
+            json.series = series;
+            json.plotOptions = plotOptions;
+
+            $('#container3').highcharts(json);
+
+        });
+
+    });
+</script>
+
+</p>
+
+
+<p>
+<div id="container4" style="width: 550px; height: 4000px; margin: 0 auto"></div>
+<script language="JavaScript">
+    $(document).ready(function() {
+
+        // 5. Add csv for Data
+        var series = [];
+
+        // rotated in bar charts. x = links oben nach unten
+        var xAxis = {
+            categories: [],
+            title: {text: null},
+           // labels: {
+           //     enabled: true,
+           //     align: 'right'
+           // }
+        };
+        var lines = [];
+
+        $.get('who-life-expectancy-by-country.csv', function(data) {
+
+            //split to lines
+            lines = data.split('\n');
+
+            //split to values
+            lines.forEach(function (line) {
+                var temp = line.split(',', 5)
+
+                if(temp[1] == '2015') {
+
+                    //xAxis categories
+                    xAxis.categories.push(temp[0]);
+
+                    //Data values
+                    series.push({
+//                        name: temp[0],
+                        data: [parseFloat(temp[2])]
+                    })
+                }
+            });
+
+            var chart = {
+                type: 'bar'
+            };
+
+            var title = {
+                text: 'Life expectancy at Birth 2015'
+            };
+
+            //y = links nach rechts, beschriftung unten
+            var yAxis = {
+                min: 0,
+                title: {
+                    text: 'Age'
+                },
+                labels: {
+                    enabled: true
+                }
+            };
+
+            var tooltip = {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderWidth: 0
+            };
+
+            var plotOptions = {
+                bar: {
+                    dataLabels: {
+                        enabled: false
+                    }
+                }
+            };
+
+            var legend = {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: -40,
+                y: 100,
+                floating: true
+            }
+            var json = {};
+
+            json.chart = chart;
+            json.title = title;
+            //json.subtitle = subtitle;
+            json.xAxis = xAxis;
+            json.yAxis = yAxis;
+            json.tooltip = tooltip;
+            //json.legend = legend;
+            json.series = series;
+            json.plotOptions = plotOptions;
+
+            $('#container4').highcharts(json);
+
+        });
+
+    });
+</script>
+
+</p>
+</body>
+</html>

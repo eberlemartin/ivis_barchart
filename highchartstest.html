@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <!--<script src="http://code.highcharts.com/modules/highstock.js"></script> -->
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            var options = {
+                chart: {
+                    renderTo: 'chart',
+                    type: 'bar'
+                },
+                title: {
+                    text: 'Martins Example'
+                },
+                xAxis: {
+                    age: []
+                },
+                yAxis: {
+                    countries: []
+                },
+                series: []
+            };
+
+            $.get('who-life-expectancy-by-country.csv', function(data) {
+                var series = {
+                    data: []
+                };
+                // Split the lines
+                var lines = data.split('\n');
+                $.each(lines, function(lineNo, line) {
+                    var items = line.split(',');
+
+                    if(items[1] == '2015'){
+                        options.yAxis.countries.push(items[0]);
+                        series.name = items[0];
+                        series.data.push(parseFloat(items[2]));
+                        options.xAxis.age.push(parseFloat(items[2]));
+                        console.log(items[0]);
+                        console.log(items[2]);
+                    }
+
+
+                    // header line containes categories
+                //    if (lineNo == 0) {
+                //        $.each(items, function(itemNo, item) {
+                //            if (itemNo == 2){
+                //                //options.xAxis.countries.push(item)
+                //                //TODO: remove
+                //                console.log(itemNo);
+                //                console.log(item);
+                //            }
+                //        });
+                //    }
+
+                    // the rest of the lines contain data with their name in the first position
+                 //  else {
+
+
+                 //
+                 //
+                 //      $.each(items, function(itemNo, item) {
+                 //          if (itemNo == 1) {
+                 //              //series.name = item;
+                 //              options.xAxis.countries.push(item);
+                 //              console.log(item);
+                 //          } else if (itemNo == 2){
+                 //              series.data.push(parseFloat(item));
+
+                 //          }
+                 //      }
+                 //      );
+
+                       options.series.push(series);
+
+                 //  }
+
+                });
+
+                var chart = new Highcharts.Chart(options);
+            });
+
+
+        });
+    </script>
+
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+<div id="chart" style="width:100%; height:4000px;"></div>
+</body>
+</html>

@@ -8,7 +8,7 @@
         google.charts.load('current', {'packages':['corechart']});
         google.charts.setOnLoadCallback(initialize);
 
-        function drawChart() {
+        //function drawChart() {
 
             //var data = new google.visualization.DataTable();
             //data.addColumn('string', 'Topping');
@@ -31,16 +31,16 @@
            // var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
            // chart.draw(data, options);
 
-        }
+        //}
 
         function initialize() {
             console.log("initialize called");
             var opts = {sendMethod: 'auto'};
             // Replace the data source URL on next line with your data source URL.
-            var query = new google.visualization.Query('https://eberlemartin.github.io/ivisd3_barchart/who-life-expectancy-by-country.csv', opts);
+            var query = new google.visualization.Query('http://localhost/who-life-expectancy-by-country.csv', opts);
 
             // Optional request to return only column C and the sum of column B, grouped by C members.
-            //query.setQuery('select C, sum(B) group by C');
+            query.setQuery('select *');
 
             // Send the query with a callback function.
             query.send(handleQueryResponse);
