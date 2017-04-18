@@ -168,10 +168,6 @@
         var xAxis = {
             categories: [],
             title: {text: null},
-            // labels: {
-            //     enabled: true,
-            //     align: 'right'
-            // }
         };
         var lines = [];
 
@@ -191,7 +187,7 @@
 
                     //Data values
                     series[0].data.push(parseFloat(temp[2]));
-                    console.log(temp[2]);
+                    //console.log(temp[2]);
                 }
             });
 
@@ -260,44 +256,64 @@
 
 
 <p>
-<div id="container4" style="width: 550px; height: 4000px; margin: 0 auto"></div>
+<div id="container4" style="width: 800px; height: 2850px; margin: 0 auto"></div>
 <script language="JavaScript">
     $(document).ready(function() {
 
         // 5. Add csv for Data
-        var series = [];
+        var series = [
+            {
+                name: '2015',
+                data: [],
+                color: '#fbc9c3'
+            }
+        ];
 
         // rotated in bar charts. x = links oben nach unten
         var xAxis = {
             categories: [],
             title: {text: null},
-           // labels: {
-           //     enabled: true,
-           //     align: 'right'
-           // }
+            lineWidth: 0,
+            minorGridLineWidth: 0,
+            tickLength: 0,
+            minorTicklength: 0,
+            labels: {
+                style: {
+                    fontSize: 10,
+                    fontWeight: 'bold',
+                    fontFamily: 'Consolas'
+                }
+            }
         };
-        var lines = [];
+
+        var lifeData = [];
 
         $.get('who-life-expectancy-by-country.csv', function(data) {
 
             //split to lines
-            lines = data.split('\n');
+            var lines = data.split('\n');
 
             //split to values
             lines.forEach(function (line) {
                 var temp = line.split(',', 5)
-
+                //save all needed Date to Array
                 if(temp[1] == '2015') {
-
-                    //xAxis categories
-                    xAxis.categories.push(temp[0]);
-
-                    //Data values
-                    series.push({
-//                        name: temp[0],
-                        data: [parseFloat(temp[2])]
-                    })
+                    lifeData.push(temp);
                 }
+            });
+
+            //sort needed Data
+            lifeData.sort(function(a,b){
+                return (parseFloat(b[2])-parseFloat(a[2]))
+            });
+
+            //fill chart with sorted Data
+            //xAxis categories
+            lifeData.forEach(function(temp) {
+                xAxis.categories.push(temp[0]);
+
+                //Data values
+                series[0].data.push(parseFloat(temp[2]));
             });
 
             var chart = {
@@ -305,18 +321,91 @@
             };
 
             var title = {
-                text: 'Life expectancy at Birth 2015'
+                text: 'LIFE EXPECTANCY AT BIRTH <br> 2015',
+                align: 'left',
+                style: {
+                    fontWeight: 'bold',
+                    fontFamily: 'Consolas'
+                }
             };
 
             //y = links nach rechts, beschriftung unten
             var yAxis = {
+                gridLineWidth: 0,
+                minorGridLineWidth: 0,
                 min: 0,
                 title: {
-                    text: 'Age'
+                    text: null
                 },
                 labels: {
-                    enabled: true
+                    enabled: true,
+                    paddingLeft: 0,
+                    paddingRight: 0,
+                    paddingTop: 0,
+                    paddingBottom: 0,
+                    style: {
+                        fontFamily: 'Consolas',
+                        fontWeight: 'bold'
+                    }
+                },
+                plotLines: [{
+                    //linie der y achse (für unterbrüche)
+                    value: 10,
+                    width: 1,
+                    zIndex: 4,
+                    color: '#ffffff'
+                },
+                {
+                    //linie der y achse (für unterbrüche)
+                    value: 20,
+                    width: 1,
+                    zIndex: 4,
+                    color: '#ffffff'
+                },
+                {
+                    //linie der y achse (für unterbrüche)
+                    value: 30,
+                    width: 1,
+                    zIndex: 4,
+                    color: '#ffffff'
+                },
+                {
+                    //linie der y achse (für unterbrüche)
+                    value: 40,
+                    width: 1,
+                    zIndex: 4,
+                    color: '#ffffff'
+                },
+                {
+                    //linie der y achse (für unterbrüche)
+                    value: 50,
+                    width: 1,
+                    zIndex: 4,
+                    color: '#ffffff'
+                },
+                {
+                    //linie der y achse (für unterbrüche)
+                    value: 60,
+                    width: 1,
+                    zIndex: 4,
+                    color: '#ffffff'
+                },
+                {
+                    //linie der y achse (für unterbrüche)
+                    value: 70,
+                    width: 1,
+                    zIndex: 4,
+                    color: '#ffffff'
+                },
+                {
+                    //linie der y achse (für unterbrüche)
+                    value: 80,
+                    width: 1,
+                    zIndex: 4,
+                    color: '#ffffff'
                 }
+                ],
+                minTickInterval: 20
             };
 
             var tooltip = {
@@ -327,32 +416,34 @@
             };
 
             var plotOptions = {
+               // series: {
+               //     pointPadding: 100,
+               //     groupPadding: 0.1
+               // },
                 bar: {
-                    dataLabels: {
-                        enabled: false
-                    }
+                    pointWidth: 14,
+                    pointPadding: 0,
+                    groupPadding: 0.1,
+                    borderWidth: 0
+                },
+                series: {
+                  pointPadding: 0,
+                    groupPadding: 0.1
                 }
             };
 
             var legend = {
-                layout: 'vertical',
-                align: 'right',
-                verticalAlign: 'top',
-                x: -40,
-                y: 100,
-                floating: true
+                enabled: false
             }
             var json = {};
-
+            json.series = series;
+            json.xAxis = xAxis;
             json.chart = chart;
             json.title = title;
-            //json.subtitle = subtitle;
-            json.xAxis = xAxis;
             json.yAxis = yAxis;
             json.tooltip = tooltip;
-            //json.legend = legend;
-            json.series = series;
             json.plotOptions = plotOptions;
+            json.legend = legend;
 
             $('#container4').highcharts(json);
 
