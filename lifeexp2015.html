@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--1. import jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <!--2. import HighCharts-->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <title>Life Expectancy at birth 2015</title>
+</head>
+<body>
+
+<p>
+<div id="container3" style="width: 550px; height: 3000px; margin: 0 auto"></div>
+<script language="JavaScript">
+    $(document).ready(function() {
+
+        var series = [
+            {
+                name: 'Life expectancy at birth',
+                data: []
+            }
+        ];
+
+        // rotated in bar charts. x = links vertikal
+        var xAxis = {
+            categories: []
+        };
+
+        $.get('who-life-expectancy-by-country.csv', function(data) {
+            //split to lines
+            var lines = data.split('\n');
+
+            //split to values
+            lines.forEach(function (line) {
+                var temp = line.split(',', 5);
+                if(temp[1] == '2015') {
+
+                    //xAxis categories
+                    xAxis.categories.push(temp[0]);
+
+                    //Data values, 0 for 2015
+                    series[0].data.push(parseFloat(temp[2]));
+                }
+            });
+
+            var chart = {
+                type: 'bar'
+            };
+
+            var title = {
+                text: 'Life expectancy at birth 2015'
+            };
+
+            //y = horizontal, beschriftung unten
+            var yAxis = {
+                labels: {
+                    enabled: true
+                }
+            };
+
+            var legend = {
+                enabled: 'false'
+            }
+            var json = {};
+
+            json.chart = chart;
+            json.title = title;
+            json.xAxis = xAxis;
+            json.yAxis = yAxis;
+            json.legend = legend;
+            json.series = series;
+
+            $('#container3').highcharts(json);
+
+        });
+
+    });
+</script>
+
+</p>
+
+</body>
+</html>
