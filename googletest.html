@@ -8,30 +8,30 @@
         google.charts.load('current', {'packages':['corechart']});
         google.charts.setOnLoadCallback(initialize);
 
-        //function drawChart() {
+        function drawChart() {
 
-            //var data = new google.visualization.DataTable();
-            //data.addColumn('string', 'Topping');
-            //data.addColumn('number', 'Slices');
-            //data.addColumn('number', 'Size')
-            //data.addRows([
-            //    ['Mushrooms', 3, 7],
-            //    ['Onions', 1, 9],
-            //    ['Olives', 1, 6],
-            //    ['Zucchini', 1, 7],
-            //    ['Pepperoni', 2, 3]
-            //]);
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Topping');
+            data.addColumn('number', 'Slices');
+            data.addColumn('number', 'Size')
+            data.addRows([
+                ['Mushrooms', 3, 7],
+                ['Onions', 1, 9],
+                ['Olives', 1, 6],
+                ['Zucchini', 1, 7],
+                ['Pepperoni', 2, 3]
+            ]);
 
-            // Set chart options
-           // var options = {'title':'How Much Pizza I Ate Last Night',
-           //     'width':400,
-           //     'height':300};
-//
-           // // Instantiate and draw our chart, passing in some options.
-           // var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
-           // chart.draw(data, options);
+             Set chart options
+            var options = {'title':'How Much Pizza I Ate Last Night',
+                'width':400,
+                'height':300};
 
-        //}
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+
+        }
 
         function initialize() {
             console.log("initialize called");
